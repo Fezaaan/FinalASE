@@ -1,9 +1,8 @@
 package dhbw.ase.listitcrudmaven.application;
 
 import dhbw.ase.listitcrudmaven.domain.GroceryItem;
-import dhbw.ase.listitcrudmaven.infrastructure.repository.GroceryItemRepository;
 import dhbw.ase.listitcrudmaven.infrastructure.persistence.GroceryItemEntity;
-import io.micrometer.observation.ObservationFilter;
+import dhbw.ase.listitcrudmaven.infrastructure.repository.GroceryItemRepository;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
