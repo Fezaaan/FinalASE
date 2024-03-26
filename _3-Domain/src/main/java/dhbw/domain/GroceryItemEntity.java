@@ -12,10 +12,15 @@ public class GroceryItemEntity {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
+    @Column
     private String itemName;
-    private int preis;
-    private Integer anzahl; // Kann null sein
+    @Column
+    private float preis;
+    @Column
+    private Integer anzahl;
+    @Column
     private boolean isChecked;
+
     public String getItemName() {
         return itemName;
     }
@@ -24,11 +29,11 @@ public class GroceryItemEntity {
         this.itemName = itemName;
     }
 
-    public int getPreis() {
+    public float getPreis() {
         return preis;
     }
 
-    public void setPreis(int preis) {
+    public void setPreis(float preis) {
         this.preis = preis;
     }
 
@@ -52,12 +57,7 @@ public class GroceryItemEntity {
         return id;
     }
 
-
-    public void setId(Long id) {
-        this.id = id;
-    }
-
-    public GroceryItemEntity(String itemName, int preis, Integer anzahl, boolean isChecked) {
+    public GroceryItemEntity(String itemName, float preis, Integer anzahl, boolean isChecked) {
         this.itemName = itemName;
         this.preis = preis;
         this.anzahl = anzahl;
@@ -68,56 +68,3 @@ public class GroceryItemEntity {
     }
 
 }
-/*
-
-package dhbw.domain;
-
-
-public class GroceryItem {
-    private String itemName;
-    private int preis;
-    private Integer anzahl; // Kann null sein, um Optionalität auszudrücken
-    private boolean isChecked; // Kann nachträglich geändert werden
-
-    public String getItemName() {
-        return itemName;
-    }
-
-    public void setItemName(String itemName) {
-        this.itemName = itemName;
-    }
-
-    public int getPreis() {
-        return preis;
-    }
-
-    public void setPreis(int preis) {
-        this.preis = preis;
-    }
-
-    public Integer getAnzahl() {
-        return anzahl;
-    }
-
-    public void setAnzahl(Integer anzahl) {
-        this.anzahl = anzahl;
-    }
-
-    public boolean isChecked() {
-        return isChecked;
-    }
-
-    public void setChecked(boolean checked) {
-        isChecked = checked;
-    }
-
-    public GroceryItem(String itemName, int preis, Integer anzahl, boolean isChecked) {
-        this.itemName = itemName;
-        this.preis = preis;
-        this.anzahl = anzahl;
-        this.isChecked = false;
-    }
-
-}
-
- */

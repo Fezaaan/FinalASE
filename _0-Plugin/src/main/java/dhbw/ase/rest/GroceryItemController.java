@@ -10,7 +10,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController
-@RequestMapping("/api/grocery-items")
+@RequestMapping("/fezaan/")
 public class GroceryItemController {
 
     @Autowired
@@ -32,68 +32,27 @@ public class GroceryItemController {
     @PostMapping
     public ResponseEntity<GroceryItemEntity> createGroceryItem(@RequestBody GroceryItemEntity groceryItemEntity) {
         GroceryItemEntity createdItem = groceryItemService.create(groceryItemEntity);
+        System.out.println("Create");
         return new ResponseEntity<>(createdItem, HttpStatus.CREATED);
     }
+    @PutMapping("/{id}")
+    public ResponseEntity<GroceryItemEntity> updateGroceryItem(@PathVariable Long id, @RequestBody GroceryItemEntity groceryItemEntity) {
 
-    // PUT und DELETE Methoden, wie kommentiert in der Originalklasse
-    // ...
-}
+        GroceryItemEntity updatedItem = groceryItemService.update(
+                id,
+                groceryItemEntity.getItemName(),
+                groceryItemEntity.getPreis(),
+                groceryItemEntity.getAnzahl(),
+                groceryItemEntity.isChecked()
+        );
 
-
-/*package dhbw.ase.rest;
-
-import dhbw.application.GroceryItemService;
-import dhbw.domain.GroceryItem;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.*;
-
-import java.util.List;
-
-@RestController
-@RequestMapping("/api/grocery-items")
-public class GroceryItemController {
-//test2
-    private final GroceryItemService groceryItemService;
-
-    public GroceryItemController(GroceryItemService groceryItemService) {
-        this.groceryItemService = groceryItemService;
+        System.out.println("Update");
+        return new ResponseEntity<>(updatedItem, HttpStatus.OK);
     }
-
-    @GetMapping
-    public ResponseEntity<List<GroceryItem>> getAllGroceryItems() {
-        return new ResponseEntity<>(groceryItemService.findAll(), HttpStatus.OK);
-    }
-
-    @GetMapping("/{id}")
-    public ResponseEntity<GroceryItem> getGroceryItemById(@PathVariable Long id) {
-        return groceryItemService.findById(id)
-                .map(ResponseEntity::ok)
-                .orElse(new ResponseEntity<>(HttpStatus.NOT_FOUND));
-    }
-
-    @PostMapping
-    public ResponseEntity<GroceryItem> createGroceryItem(@RequestBody GroceryItem groceryItem) {
-        GroceryItem createdGroceryItem = groceryItemService.create(groceryItem);
-        return new ResponseEntity<>(createdGroceryItem, HttpStatus.CREATED);
-    }
-
-    /*@PutMapping("/{id}")
-    public ResponseEntity<GroceryItem> updateGroceryItem(@PathVariable Long id, @RequestBody GroceryItem groceryItem) {
-        return groceryItemService.update(id, groceryItem)
-                .map(updatedGroceryItem -> new ResponseEntity<>(updatedGroceryItem, HttpStatus.OK))
-                .orElse(new ResponseEntity<>(HttpStatus.NOT_FOUND));
-    }
-
     @DeleteMapping("/{id}")
     public ResponseEntity<Void> deleteGroceryItem(@PathVariable Long id) {
-        if (groceryItemService.delete(id)) {
-            return new ResponseEntity<>(HttpStatus.NO_CONTENT);
-        } else {
-            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
-        }
+        groceryItemService.deleteById(id);
+        System.out.println("Deleted");
+        return ResponseEntity.noContent().build();
     }
-
-    // Hier könntest du weitere Methoden hinzufügen, wie z.B. das Suchen von Einträgen oder das Abhaken eines Items als gekauft (isChecked).
 }
-        */
