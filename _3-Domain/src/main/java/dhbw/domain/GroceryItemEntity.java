@@ -1,5 +1,6 @@
 package dhbw.domain;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import jakarta.persistence.*;
 
 import jakarta.persistence.Entity;
@@ -21,6 +22,16 @@ public class GroceryItemEntity {
     @Column
     private boolean isChecked;
 
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "shopping_list_id")
+    @JsonBackReference
+    private ShoppingListEntity shoppingList;
+    public void setShoppingList(ShoppingListEntity shoppingList) {
+        this.shoppingList = shoppingList;
+    }
+    public ShoppingListEntity getShoppingList(){
+        return shoppingList;
+    }
     public String getItemName() {
         return itemName;
     }

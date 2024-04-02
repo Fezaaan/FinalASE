@@ -2,18 +2,17 @@ package dhbw.application;
 import dhbw.domain.GroceryItemEntity;
 import dhbw.domain.ports.GroceryItemRepository;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.Optional;
 
 @Service
-public class GroceryItemServiceImpl {
+public class GroceryItemService {
     @Autowired
     private final GroceryItemRepository groceryItemRepository;
     @Autowired
-    public GroceryItemServiceImpl(GroceryItemRepository groceryItemRepository) {
+    public GroceryItemService(GroceryItemRepository groceryItemRepository) {
         this.groceryItemRepository = groceryItemRepository;
     }
 

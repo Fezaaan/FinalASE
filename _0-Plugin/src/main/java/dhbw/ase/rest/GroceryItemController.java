@@ -1,6 +1,6 @@
 package dhbw.ase.rest;
 
-import dhbw.application.GroceryItemServiceImpl;
+import dhbw.application.GroceryItemService;
 import dhbw.domain.GroceryItemEntity;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -14,7 +14,7 @@ import java.util.List;
 public class GroceryItemController {
 
     @Autowired
-    private GroceryItemServiceImpl groceryItemService;
+    private GroceryItemService groceryItemService;
 
     @GetMapping
     public ResponseEntity<List<GroceryItemEntity>> getAllGroceryItems() {

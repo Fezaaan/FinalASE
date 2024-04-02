@@ -10,5 +10,6 @@ public interface GroceryItemRepository {
     GroceryItemEntity save(GroceryItemEntity item);
     void deleteById(Long id);
     GroceryItemEntity update (Long id, String name, float preis, int anzahl, boolean checked);
+    List<GroceryItemEntity> findByShoppingListId(Long shoppingListId);
 
 }

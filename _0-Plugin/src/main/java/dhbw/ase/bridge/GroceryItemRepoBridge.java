@@ -53,5 +53,10 @@ public class GroceryItemRepoBridge implements GroceryItemRepository {
         }
     }
 
+    @Override
+    public List<GroceryItemEntity> findByShoppingListId(Long shoppingListId) {
+        return groceryItemJpaRepository.findByShoppingListId(shoppingListId);
+    }
+
 
 }
