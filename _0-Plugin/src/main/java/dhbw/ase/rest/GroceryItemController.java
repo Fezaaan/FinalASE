@@ -10,7 +10,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController
-@RequestMapping("/fezaan/")
+@RequestMapping("/items/")
 public class GroceryItemController {
 
     @Autowired
@@ -41,9 +41,9 @@ public class GroceryItemController {
         GroceryItemEntity updatedItem = groceryItemService.update(
                 id,
                 groceryItemEntity.getItemName(),
-                groceryItemEntity.getPreis(),
-                groceryItemEntity.getAnzahl(),
-                groceryItemEntity.isChecked()
+                groceryItemEntity.getItemPreis(),
+                groceryItemEntity.getItemAnzahl(),
+                groceryItemEntity.isItemIsChecked()
         );
 
         System.out.println("Update");

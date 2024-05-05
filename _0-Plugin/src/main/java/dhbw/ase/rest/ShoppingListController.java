@@ -2,7 +2,7 @@ package dhbw.ase.rest;
 
 import dhbw.domain.GroceryItemEntity;
 import dhbw.domain.ShoppingListEntity;
-import dhbw.ase.service.ShoppingListService;
+import dhbw.application.ShoppingListService;
 import jakarta.persistence.EntityNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -73,7 +73,7 @@ public class ShoppingListController {
         }
     }
 
-    @PutMapping
+    @PutMapping("/{id}/name")
     public ResponseEntity<ShoppingListEntity> updateShoppingListName(@PathVariable Long id, @RequestBody String name) {
         try {
             ShoppingListEntity updatedList = shoppingListService.updateShoppingListName(id, name);

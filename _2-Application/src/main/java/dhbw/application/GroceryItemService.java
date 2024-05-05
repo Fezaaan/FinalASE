@@ -1,6 +1,7 @@
 package dhbw.application;
 import dhbw.domain.GroceryItemEntity;
 import dhbw.domain.ports.GroceryItemRepository;
+import dhbw.domain.vo.Money;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -30,7 +31,7 @@ public class GroceryItemService {
     public void deleteById(Long id) {
         groceryItemRepository.deleteById(id);
     }
-    public GroceryItemEntity update(Long id, String name, float preis, int anzahl, boolean checked){
+    public GroceryItemEntity update(Long id, String name, Money preis, int anzahl, boolean checked){
      return groceryItemRepository.update(id,name,preis,anzahl,checked);
     }
 }

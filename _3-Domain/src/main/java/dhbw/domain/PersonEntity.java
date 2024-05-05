@@ -1,36 +1,37 @@
 package dhbw.domain;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import jakarta.persistence.*;
+
 import java.util.ArrayList;
 import java.util.List;
-
 @Entity
 public class PersonEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+    private Long personID;
+    @Column
+    private String personName;
 
-    private String name;
-
-    // Bi-directional relationship
-    @OneToMany(mappedBy = "person", cascade = CascadeType.ALL, orphanRemoval = true)
+    @JsonBackReference // verhindert zirkuläre Referenzen
+    @OneToMany(mappedBy = "owner", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<ShoppingListEntity> shoppingLists = new ArrayList<>();
 
     // Getter und Setter
-    public Long getId() {
-        return id;
+    public Long getPersonID() {
+        return personID;
     }
 
-    public void setId(Long id) {
-        this.id = id;
+    public void setPersonID(Long id) {
+        this.personID = id;
     }
 
-    public String getName() {
-        return name;
+    public String getPersonName() {
+        return personName;
     }
 
-    public void setName(String name) {
-        this.name = name;
+    public void setPersonName(String name) {
+        this.personName = name;
     }
 
     public List<ShoppingListEntity> getShoppingLists() {
@@ -40,14 +41,4 @@ public class PersonEntity {
     public void setShoppingLists(List<ShoppingListEntity> shoppingLists) {
         this.shoppingLists = shoppingLists;
     }
-/*
-    public void addShoppingList(ShoppingListEntity shoppingList) {
-        shoppingLists.add(shoppingList);
-        shoppingList.setPerson(this);
-    }
-
-    public void removeShoppingList(ShoppingListEntity shoppingList) {
-        shoppingLists.remove(shoppingList);
-        shoppingList.setPerson(null);
-    }*/
 }

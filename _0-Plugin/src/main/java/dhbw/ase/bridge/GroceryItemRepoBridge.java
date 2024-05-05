@@ -3,6 +3,7 @@ package dhbw.ase.bridge;
 import dhbw.ase.repository.GroceryItemJpaRepository;
 import dhbw.domain.GroceryItemEntity;
 import dhbw.domain.ports.GroceryItemRepository;
+import dhbw.domain.vo.Money;
 import jakarta.persistence.EntityNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
@@ -39,14 +40,14 @@ public class GroceryItemRepoBridge implements GroceryItemRepository {
     }
 
     @Override
-    public GroceryItemEntity update(Long id, String name, float preis, int anzahl, boolean checked) {
+    public GroceryItemEntity update(Long id, String name, Money preis, int anzahl, boolean checked) {
         Optional<GroceryItemEntity> oldOpt = groceryItemJpaRepository.findById(id);
         if (oldOpt.isPresent()) {
             GroceryItemEntity existingItem = oldOpt.get();
             existingItem.setItemName(name);
-            existingItem.setPreis(preis);
-            existingItem.setAnzahl(anzahl);
-            existingItem.setChecked(checked);
+            existingItem.setItemPreis(preis);
+            existingItem.setItemAnzahl(anzahl);
+            existingItem.setItemIsChecked(checked);
             return groceryItemJpaRepository.save(existingItem);
         } else {
             throw new EntityNotFoundException("GroceryItem with id " + id + " not found.");
@@ -55,7 +56,7 @@ public class GroceryItemRepoBridge implements GroceryItemRepository {
 
     @Override
     public List<GroceryItemEntity> findByShoppingListId(Long shoppingListId) {
-        return groceryItemJpaRepository.findByShoppingListId(shoppingListId);
+        return groceryItemJpaRepository.findByShoppingList_Id(shoppingListId);
     }
 
 

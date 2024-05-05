@@ -1,6 +1,7 @@
 package dhbw.domain;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
+import dhbw.domain.vo.Money;
 import jakarta.persistence.*;
 
 import jakarta.persistence.Entity;
@@ -11,16 +12,16 @@ import jakarta.persistence.Table;
 public class GroceryItemEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+    private Long itemID;
 
     @Column
     private String itemName;
+    @Embedded
+    private Money itemPreis;
     @Column
-    private float preis;
+    private Integer itemAnzahl;
     @Column
-    private Integer anzahl;
-    @Column
-    private boolean isChecked;
+    private boolean itemIsChecked;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "shopping_list_id")
@@ -40,39 +41,39 @@ public class GroceryItemEntity {
         this.itemName = itemName;
     }
 
-    public float getPreis() {
-        return preis;
+    public Money getItemPreis() {
+        return itemPreis;
     }
 
-    public void setPreis(float preis) {
-        this.preis = preis;
+    public void setItemPreis(Money itemPreis) {
+        this.itemPreis = itemPreis;
     }
 
-    public Integer getAnzahl() {
-        return anzahl;
+    public Integer getItemAnzahl() {
+        return itemAnzahl;
     }
 
-    public void setAnzahl(Integer anzahl) {
-        this.anzahl = anzahl;
+    public void setItemAnzahl(Integer anzahl) {
+        this.itemAnzahl = anzahl;
     }
 
-    public boolean isChecked() {
-        return isChecked;
+    public boolean isItemIsChecked() {
+        return itemIsChecked;
     }
 
-    public void setChecked(boolean checked) {
-        isChecked = checked;
+    public void setItemIsChecked(boolean itemIsChecked) {
+        this.itemIsChecked = itemIsChecked;
     }
 
-    public Long getId() {
-        return id;
+    public Long getItemID() {
+        return itemID;
     }
 
-    public GroceryItemEntity(String itemName, float preis, Integer anzahl, boolean isChecked) {
+    public GroceryItemEntity(String itemName, Money preis, Integer anzahl, boolean itemIsChecked) {
         this.itemName = itemName;
-        this.preis = preis;
-        this.anzahl = anzahl;
-        this.isChecked = false;
+        this.itemPreis = preis;
+        this.itemAnzahl = anzahl;
+        this.itemIsChecked = false;
     }
     public GroceryItemEntity() {
 

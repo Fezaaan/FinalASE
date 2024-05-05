@@ -45,7 +45,7 @@ public class ShoppingListRepoBridge implements ShoppingListRepository {
         Optional<ShoppingListEntity> listOpt = shoppingListJpaRepository.findById(id);
         if (listOpt.isPresent()) {
             ShoppingListEntity existingList = listOpt.get();
-            existingList.setName(name);
+            existingList.setListName(name);
             return shoppingListJpaRepository.save(existingList);
         } else {
             throw new EntityNotFoundException("ShoppingList with id " + id + " not found.");

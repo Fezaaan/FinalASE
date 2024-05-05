@@ -1,4 +1,4 @@
-package dhbw.ase.service;
+package dhbw.application;
 
 import dhbw.domain.GroceryItemEntity;
 import dhbw.domain.ShoppingListEntity;
@@ -42,7 +42,7 @@ public class ShoppingListService {
     public ShoppingListEntity updateShoppingList(Long id, ShoppingListEntity updatedShoppingList) {
         return shoppingListRepository.findById(id)
                 .map(shoppingList -> {
-                    shoppingList.setName(updatedShoppingList.getName());
+                    shoppingList.setListName(updatedShoppingList.getListName());
                     // Hier weitere Felder aktualisieren, z.B. Beschreibung, falls vorhanden
                     return shoppingListRepository.save(shoppingList);
                 })
@@ -73,7 +73,7 @@ public class ShoppingListService {
         GroceryItemEntity itemToDelete = groceryItemRepository.findById(itemId)
                 .orElseThrow(() -> new EntityNotFoundException("Item not found with id: " + itemId));
 
-        if (!itemToDelete.getShoppingList().getId().equals(listId)) {
+        if (!itemToDelete.getShoppingList().getListID().equals(listId)) {
             throw new IllegalArgumentException("Item does not belong to the specified shopping list");
         }
 

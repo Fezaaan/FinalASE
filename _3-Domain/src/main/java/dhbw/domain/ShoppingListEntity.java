@@ -1,6 +1,8 @@
 package dhbw.domain;
 
+import com.fasterxml.jackson.annotation.JsonIdentityInfo;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
+import com.fasterxml.jackson.annotation.ObjectIdGenerators;
 import jakarta.persistence.*;
 
 import java.util.ArrayList;
@@ -10,22 +12,25 @@ import java.util.List;
 public class ShoppingListEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+    private Long listID;
     @Column
-    private String name;
+    private String listName;
 
-    @ManyToOne(fetch = FetchType.LAZY)
+    @JsonIdentityInfo(
+            generator = ObjectIdGenerators.PropertyGenerator.class,
+            property = "id"
+    )
+    @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "person_id")
-    @JsonBackReference
-    private PersonEntity person;
+    private PersonEntity owner;
 
     // Getter und Setter...
-    public PersonEntity getPerson() {
-        return person;
+    public PersonEntity getOwner() {
+        return owner;
     }
 
-    public void setPerson(PersonEntity person) {
-        this.person = person;
+    public void setOwner(PersonEntity person) {
+        this.owner = person;
     }
 
     // Ein ShoppingList kann viele Items haben.
@@ -33,12 +38,12 @@ public class ShoppingListEntity {
     @JsonManagedReference
     private List<GroceryItemEntity> items = new ArrayList<>();
 
-    public String getName() {
-        return name;
+    public String getListName() {
+        return listName;
     }
 
-    public void setName(String name) {
-        this.name = name;
+    public void setListName(String name) {
+        this.listName = name;
     }
 
     public List<GroceryItemEntity> getItems() {
@@ -49,8 +54,8 @@ public class ShoppingListEntity {
         this.items = items;
     }
 
-    public Object getId() {
-        return id;
+    public Object getListID() {
+        return listID;
     }
 
     // Standardkonstruktoren, Getter und Setter
