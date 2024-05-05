@@ -29,7 +29,7 @@ public class GroceryItemController {
                 .orElse(new ResponseEntity<>(HttpStatus.NOT_FOUND));
     }
 
-    @PostMapping
+    @PostMapping(consumes = "application/json", produces = "application/json")
     public ResponseEntity<GroceryItemEntity> createGroceryItem(@RequestBody GroceryItemEntity groceryItemEntity) {
         GroceryItemEntity createdItem = groceryItemService.create(groceryItemEntity);
         System.out.println("Create");

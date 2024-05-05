@@ -18,7 +18,7 @@ public class ShoppingListEntity {
 
     @JsonIdentityInfo(
             generator = ObjectIdGenerators.PropertyGenerator.class,
-            property = "id"
+            property = "personID"
     )
     @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "person_id")

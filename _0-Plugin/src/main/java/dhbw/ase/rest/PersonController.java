@@ -33,11 +33,7 @@ public class PersonController {
             @RequestBody ShoppingListEntity shoppingList
     ) {
         Optional<ShoppingListEntity> createdShoppingList = Optional.ofNullable(personService.addShoppingListToPerson(personId, shoppingList));
-        if (createdShoppingList.isPresent()) {
-            return new ResponseEntity<>(createdShoppingList.get(), HttpStatus.CREATED);
-        } else {
-            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
-        }
+        return createdShoppingList.map(shoppingListEntity -> new ResponseEntity<>(shoppingListEntity, HttpStatus.CREATED)).orElseGet(() -> new ResponseEntity<>(HttpStatus.NOT_FOUND));
     }
 
 
@@ -58,7 +54,7 @@ public class PersonController {
     @PutMapping("/{id}")
     public ResponseEntity<PersonEntity> updatePerson(@PathVariable Long id, @RequestBody PersonEntity person) {
         return personService.update(id, person)
-                .map(updatedPerson -> ResponseEntity.ok(updatedPerson))
+                .map(ResponseEntity::ok)
                 .orElse(new ResponseEntity<>(HttpStatus.NOT_FOUND));
     }
 
