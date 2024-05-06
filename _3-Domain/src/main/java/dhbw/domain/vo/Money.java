@@ -9,7 +9,7 @@ import jakarta.persistence.Embeddable;
 @Embeddable
 public final class Money {
 
-    @Column(name = "price")
+    @Column(name = "price", nullable = false)
     private final BigDecimal amount;
     private final Currency currency;
     // JPA benötigt einen no-arg Konstruktor

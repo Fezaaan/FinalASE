@@ -1,5 +1,6 @@
 package dhbw.ase.rest;
 
+import dhbw.application.PricingService;
 import dhbw.domain.GroceryItemEntity;
 import dhbw.domain.ShoppingListEntity;
 import dhbw.application.ShoppingListService;
@@ -9,6 +10,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.math.BigDecimal;
 import java.util.List;
 
 @RestController
@@ -16,12 +18,23 @@ import java.util.List;
 public class ShoppingListController {
 
     private final ShoppingListService shoppingListService;
+    private final PricingService pricingService;
 
     @Autowired
-    public ShoppingListController(ShoppingListService shoppingListService) {
+    public ShoppingListController(ShoppingListService shoppingListService, PricingService pricingService) {
         this.shoppingListService = shoppingListService;
+        this.pricingService = pricingService;
     }
 
+    @GetMapping("/{id}/price")
+    public ResponseEntity<BigDecimal> calculateTotalPrice(@PathVariable Long id) {
+        try {
+            BigDecimal totalPrice = pricingService.calculateTotalPriceForList(id);
+            return ResponseEntity.ok(totalPrice);
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
+        }
+    }
     @PostMapping
     public ResponseEntity<ShoppingListEntity> createShoppingList(@RequestBody ShoppingListEntity shoppingList) {
         ShoppingListEntity createdList = shoppingListService.createShoppingList(shoppingList);
