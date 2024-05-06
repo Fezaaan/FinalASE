@@ -45,7 +45,7 @@ public class PersonService {
         contactInfo.setEmail(updatedContactInfo.getEmail());
         return contactInfoRepository.save(contactInfo);
     }
-
+//
     @Transactional
     public void deleteContactInfo(Long contactInfoId) {
         ContactInfo contactInfo = contactInfoRepository.findById(contactInfoId)
