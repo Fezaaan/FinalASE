@@ -2,6 +2,7 @@ package dhbw.domain;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.ObjectIdGenerators;
+import dhbw.domain.aggregate.ContactInfo;
 import jakarta.persistence.*;
 
 import java.util.ArrayList;
@@ -17,6 +18,10 @@ public class PersonEntity {
     @JsonBackReference // verhindert zirkuläre Referenzen
     @OneToMany(mappedBy = "owner", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<ShoppingListEntity> shoppingLists = new ArrayList<>();
+
+    @OneToOne(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
+    @JoinColumn(name = "contact_info_id")
+    private ContactInfo contactInfo;
 
     // Getter und Setter
     public Long getPersonID() {
@@ -42,4 +47,12 @@ public class PersonEntity {
     public void setShoppingLists(List<ShoppingListEntity> shoppingLists) {
         this.shoppingLists = shoppingLists;
     }
+    public ContactInfo getContactInfo() {
+        return contactInfo;
+    }
+
+    public void setContactInfo(ContactInfo contactInfo) {
+        this.contactInfo = contactInfo;
+    }
+
 }

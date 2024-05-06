@@ -3,6 +3,7 @@ package dhbw.ase.rest;
 import dhbw.domain.PersonEntity;
 import dhbw.domain.ShoppingListEntity;
 import dhbw.application.PersonService;
+import dhbw.domain.aggregate.ContactInfo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -72,5 +73,22 @@ public class PersonController {
         } else {
             return ResponseEntity.notFound().build();
         }
+    }
+    @PostMapping("/{personId}/contactinfo")
+    public ResponseEntity<ContactInfo> addContactInfo(@PathVariable Long personId, @RequestBody ContactInfo contactInfo) {
+        ContactInfo newContactInfo = personService.addContactInfoToPerson(personId, contactInfo);
+        return new ResponseEntity<>(newContactInfo, HttpStatus.CREATED);
+    }
+
+    @PutMapping("/contactinfo/{contactInfoId}")
+    public ResponseEntity<ContactInfo> updateContactInfo(@PathVariable Long contactInfoId, @RequestBody ContactInfo contactInfo) {
+        ContactInfo updatedContactInfo = personService.updateContactInfo(contactInfoId, contactInfo);
+        return ResponseEntity.ok(updatedContactInfo);
+    }
+
+    @DeleteMapping("/contactinfo/{contactInfoId}")
+    public ResponseEntity<Void> deleteContactInfo(@PathVariable Long contactInfoId) {
+        personService.deleteContactInfo(contactInfoId);
+        return ResponseEntity.noContent().build();
     }
 }

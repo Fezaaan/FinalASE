@@ -2,11 +2,15 @@ package dhbw.application;
 
 import dhbw.domain.PersonEntity;
 import dhbw.domain.ShoppingListEntity;
+import dhbw.domain.aggregate.ContactInfo;
+import dhbw.domain.ports.ContactInfoRepository;
 import dhbw.domain.ports.PersonRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import jakarta.persistence.EntityNotFoundException;
+import org.springframework.transaction.annotation.Transactional;
+
 import java.util.List;
 import java.util.Optional;
 
@@ -14,11 +18,46 @@ import java.util.Optional;
 public class PersonService {
 
     private final PersonRepository personRepository;
-
-
+    private final ContactInfoRepository contactInfoRepository;
     @Autowired
-    public PersonService(PersonRepository personRepository) {
+    public PersonService(PersonRepository personRepository, ContactInfoRepository contactInfoRepository) {
         this.personRepository = personRepository;
+        this.contactInfoRepository=contactInfoRepository;
+    }
+
+    @Transactional
+    public ContactInfo addContactInfoToPerson(Long personId, ContactInfo contactInfo) {
+        PersonEntity person = personRepository.findById(personId)
+                .orElseThrow(() -> new RuntimeException("Person not found with id: " + personId));
+
+        contactInfo.setPerson(person);
+        person.setContactInfo(contactInfo);
+        return contactInfoRepository.save(contactInfo);
+    }
+
+    @Transactional
+    public ContactInfo updateContactInfo(Long contactInfoId, ContactInfo updatedContactInfo) {
+        ContactInfo contactInfo = contactInfoRepository.findById(contactInfoId)
+                .orElseThrow(() -> new RuntimeException("ContactInfo not found with id: " + contactInfoId));
+
+        contactInfo.setPhoneNumber(updatedContactInfo.getPhoneNumber());
+        contactInfo.setAddress(updatedContactInfo.getAddress());
+        contactInfo.setEmail(updatedContactInfo.getEmail());
+        return contactInfoRepository.save(contactInfo);
+    }
+
+    @Transactional
+    public void deleteContactInfo(Long contactInfoId) {
+        ContactInfo contactInfo = contactInfoRepository.findById(contactInfoId)
+                .orElseThrow(() -> new RuntimeException("ContactInfo not found with id: " + contactInfoId));
+
+        PersonEntity person = contactInfo.getPerson();
+        if (person != null) {
+            person.setContactInfo(null);
+            personRepository.save(person);
+        }
+
+        contactInfoRepository.deleteById(contactInfoId);
     }
 
     public PersonEntity save(PersonEntity person) {
