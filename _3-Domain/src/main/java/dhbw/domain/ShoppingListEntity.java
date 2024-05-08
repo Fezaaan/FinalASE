@@ -58,5 +58,9 @@ public class ShoppingListEntity {
         return listID;
     }
 
+    public void setListID(long l) {
+        this.listID=l;
+    }
+
     // Standardkonstruktoren, Getter und Setter
 }

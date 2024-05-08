@@ -79,4 +79,7 @@ public class GroceryItemEntity {
 
     }
 
+    public void setItemID(long l) {
+        this.itemID=l;
+    }
 }
