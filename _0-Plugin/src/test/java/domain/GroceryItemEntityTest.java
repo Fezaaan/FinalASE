@@ -39,7 +39,7 @@ class GroceryItemEntityTest {
     void testGetSetItemPreis() {
         assertNotNull(groceryItem.getItemPreis(), "Item price should not be null.");
         assertEquals(2.99, groceryItem.getItemPreis().getAmount().doubleValue(), "The item price should match.");
-        Money newPrice = new Money("EUR", 1.50);
+        Money newPrice = new Money( new BigDecimal("1.50"), Currency.getInstance("EUR"));
         groceryItem.setItemPreis(newPrice);
         assertEquals(1.50, groceryItem.getItemPreis().getAmount().doubleValue(), "The item price should be updated.");
     }
