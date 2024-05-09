@@ -4,6 +4,7 @@ import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.*;
 
 import dhbw.application.ShoppingListService;
+import dhbw.ase.ListItCrudMavenApplication;
 import dhbw.domain.GroceryItemEntity;
 import dhbw.domain.ShoppingListEntity;
 import dhbw.domain.ports.GroceryItemRepository;
@@ -18,7 +19,7 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
 
-@SpringBootTest
+@SpringBootTest(classes= ListItCrudMavenApplication.class)
 public class ShoppingListServiceTest {
 
     @Mock
@@ -94,5 +95,65 @@ public class ShoppingListServiceTest {
         shoppingListService.deleteShoppingList(1L);
         verify(shoppingListRepository).deleteById(1L);
     }
+    @Test
+    void addItemToShoppingList_itemAddedToList() {
+        // Vorbedingungen einrichten
+        ShoppingListEntity shoppingList = new ShoppingListEntity();
+        GroceryItemEntity groceryItem = new GroceryItemEntity();
+        groceryItem.setItemID(1L);
+        groceryItem.setItemName("TestItem");
+
+        when(shoppingListRepository.findById(anyLong())).thenReturn(Optional.of(shoppingList));
+        when(groceryItemRepository.save(any(GroceryItemEntity.class))).thenReturn(groceryItem);
+
+        // Aktion ausführen
+        GroceryItemEntity addedItem = shoppingListService.addItemToShoppingList(1L, groceryItem);
+
+        // Überprüfen, ob das Item korrekt hinzugefügt wurde
+        assertNotNull(addedItem);
+        assertEquals("TestItem", addedItem.getItemName());
+        assertEquals(shoppingList, addedItem.getShoppingList());
+        verify(groceryItemRepository).save(any(GroceryItemEntity.class));
+    }
+
+    @Test
+    void deleteItemFromShoppingList_itemDeletedFromList() {
+        // Vorbedingungen einrichten
+        ShoppingListEntity shoppingList = new ShoppingListEntity();
+        shoppingList.setListID(1L);
+        GroceryItemEntity groceryItem = new GroceryItemEntity();
+        groceryItem.setItemID(1L);
+        groceryItem.setItemName("TestItem");
+        groceryItem.setShoppingList(shoppingList);
+
+        when(shoppingListRepository.findById(anyLong())).thenReturn(Optional.of(shoppingList));
+        when(groceryItemRepository.findById(anyLong())).thenReturn(Optional.of(groceryItem));
+        doNothing().when(groceryItemRepository).deleteById(anyLong());
+
+        // Aktion ausführen
+        shoppingListService.deleteItemFromShoppingList(1L, 1L);
+
+        // Überprüfen, ob das Item korrekt gelöscht wurde
+        verify(groceryItemRepository).deleteById(1L);
+    }
+
+    @Test
+    void updateShoppingListName_updatesName() {
+        // Vorbedingungen einrichten
+        ShoppingListEntity shoppingList = new ShoppingListEntity();
+        shoppingList.setListID(1L);
+        shoppingList.setListName("NewName"); // Setze den neuen Namen
+
+        when(shoppingListRepository.update(anyLong(), anyString())).thenReturn(shoppingList);
+
+        // Aktion ausführen
+        ShoppingListEntity updatedList = shoppingListService.updateShoppingListName(1L, "NewName");
+
+        // Überprüfen, ob der Name korrekt aktualisiert wurde
+        assertNotNull(updatedList);
+        assertEquals("NewName", updatedList.getListName());
+        verify(shoppingListRepository).update(1L, "NewName");
+    }
+
 
 }

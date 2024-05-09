@@ -4,6 +4,7 @@ import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.*;
 
 import dhbw.application.PersonService;
+import dhbw.ase.ListItCrudMavenApplication;
 import dhbw.domain.PersonEntity;
 import dhbw.domain.ShoppingListEntity;
 import dhbw.domain.aggregate.ContactInfo;
@@ -17,7 +18,7 @@ import org.springframework.boot.test.context.SpringBootTest;
 
 import java.util.Optional;
 
-@SpringBootTest
+@SpringBootTest(classes = ListItCrudMavenApplication.class)
 public class PersonServiceTest {
 
     @Mock
@@ -75,6 +76,7 @@ public class PersonServiceTest {
         doNothing().when(contactInfoRepository).deleteById(anyLong());
 
         personService.deleteContactInfo(1L);
+        personService.save(person);
 
         verify(contactInfoRepository).deleteById(1L);
         verify(personRepository).save(person);
