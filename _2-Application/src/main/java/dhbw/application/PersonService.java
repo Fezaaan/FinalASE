@@ -36,13 +36,13 @@ public class PersonService {
     }
 
     @Transactional
-    public ContactInfo updateContactInfo(Long contactInfoId, ContactInfo updatedContactInfo) {
+    public ContactInfo updateContactInfo(Long contactInfoId, ContactInfo contactinfo) {
         ContactInfo contactInfo = contactInfoRepository.findById(contactInfoId)
                 .orElseThrow(() -> new RuntimeException("ContactInfo not found with id: " + contactInfoId));
 
-        contactInfo.setPhoneNumber(updatedContactInfo.getPhoneNumber());
-        contactInfo.setAddress(updatedContactInfo.getAddress());
-        contactInfo.setEmail(updatedContactInfo.getEmail());
+        contactInfo.setPhoneNumber(contactinfo.getPhoneNumber());
+        contactInfo.setAddress(contactinfo.getAddress());
+        contactInfo.setEmail(contactinfo.getEmail());
         return contactInfoRepository.save(contactInfo);
     }
 //
