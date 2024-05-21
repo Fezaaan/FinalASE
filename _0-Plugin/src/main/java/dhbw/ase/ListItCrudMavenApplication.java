@@ -15,7 +15,7 @@ import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
 public class ListItCrudMavenApplication {
 
     public static void main(String[] args) {
-        System.out.println("Start");
+        System.out.println("Welcome to a new shopping experience :)");
         SpringApplication.run(ListItCrudMavenApplication.class, args);
     }
 
