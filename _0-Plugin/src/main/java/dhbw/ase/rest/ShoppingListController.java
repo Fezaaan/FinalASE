@@ -4,6 +4,9 @@ import dhbw.application.PricingService;
 import dhbw.domain.GroceryItemEntity;
 import dhbw.domain.ShoppingListEntity;
 import dhbw.application.ShoppingListService;
+import dhbw.domain.designpattern_strategy.DiscountPriceCalculationStrategy;
+import dhbw.domain.designpattern_strategy.PriceCalculationStrategy;
+import dhbw.domain.designpattern_strategy.SimplePriceCalculationStrategy;
 import jakarta.persistence.EntityNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -35,6 +38,25 @@ public class ShoppingListController {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
         }
     }
+
+    @PostMapping("/{id}/price/strategy")
+    public ResponseEntity<Void> changePriceStrategy(@PathVariable Long id, @RequestParam String strategyType) {
+        PriceCalculationStrategy strategy;
+        switch (strategyType) {
+            case "simple":
+                strategy = new SimplePriceCalculationStrategy();
+                break;
+            case "discount":
+                strategy = new DiscountPriceCalculationStrategy();
+                break;
+            default:
+                return ResponseEntity.badRequest().build();
+        }
+        pricingService.setPriceCalculationStrategy(strategy);
+        return ResponseEntity.ok().build();
+    }
+
+
     @PostMapping
     public ResponseEntity<ShoppingListEntity> createShoppingList(@RequestBody ShoppingListEntity shoppingList) {
         ShoppingListEntity createdList = shoppingListService.createShoppingList(shoppingList);
@@ -95,6 +117,15 @@ public class ShoppingListController {
             return ResponseEntity.notFound().build();
         }
     }
-
-
+    /*
+    TRASH?
+    @GetMapping("/{id}/price")
+    public ResponseEntity<BigDecimal> calculateTotalPrice(@PathVariable Long id) {
+        try {
+            BigDecimal totalPrice = pricingService.calculateTotalPriceForList(id);
+            return ResponseEntity.ok(totalPrice);
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
+        }
+    }*/
 }

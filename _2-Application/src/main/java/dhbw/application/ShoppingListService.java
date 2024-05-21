@@ -33,7 +33,6 @@ public class ShoppingListService {
         return shoppingListRepository.findAll();
     }
 
-
     public Optional<ShoppingListEntity> getShoppingListById(Long id) {
         return shoppingListRepository.findById(id);
     }
@@ -56,7 +55,7 @@ public class ShoppingListService {
 
     public GroceryItemEntity addItemToShoppingList(Long listId, GroceryItemEntity groceryItem) {
         Optional<ShoppingListEntity> shoppingListOpt = shoppingListRepository.findById(listId);
-        if (!shoppingListOpt.isPresent()) {
+        if (shoppingListOpt.isEmpty()) {
             throw new RuntimeException("ShoppingList not found with id: " + listId);
         }
 
