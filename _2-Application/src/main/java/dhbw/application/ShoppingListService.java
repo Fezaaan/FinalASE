@@ -54,14 +54,22 @@ public class ShoppingListService {
     }
 
     public GroceryItemEntity addItemToShoppingList(Long listId, GroceryItemEntity groceryItem) {
-        Optional<ShoppingListEntity> shoppingListOpt = shoppingListRepository.findById(listId);
-        if (shoppingListOpt.isEmpty()) {
-            throw new RuntimeException("ShoppingList not found with id: " + listId);
-        }
+        ShoppingListEntity shoppingList = getShoppingListByIdOrThrow(listId);
+        setRelationshipBetweenItemAndList(groceryItem, shoppingList);
+        return saveGroceryItem(groceryItem);
+    }
 
-        ShoppingListEntity shoppingList = shoppingListOpt.get();
-        groceryItem.setShoppingList(shoppingList); // Setzt die Beziehung zwischen dem Item und der Liste
-        return groceryItemRepository.save(groceryItem); // Speichert das Item, das nun zur Liste gehört
+    private ShoppingListEntity getShoppingListByIdOrThrow(Long listId) {
+        return getShoppingListById(listId)
+                .orElseThrow(() -> new RuntimeException("ShoppingList not found with id: " + listId));
+    }
+
+    private void setRelationshipBetweenItemAndList(GroceryItemEntity groceryItem, ShoppingListEntity shoppingList) {
+        groceryItem.setShoppingList(shoppingList);
+    }
+
+    private GroceryItemEntity saveGroceryItem(GroceryItemEntity groceryItem) {
+        return groceryItemRepository.save(groceryItem);
     }
     public void deleteItemFromShoppingList(Long listId, Long itemId) {
         // Überprüfung, ob die Einkaufsliste existiert
